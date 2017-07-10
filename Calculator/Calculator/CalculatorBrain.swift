@@ -15,8 +15,23 @@ struct CalculatorBrain {
 
     private var accumulator: Double? // private because it's for internal use only
     
-    func performOperation(_ symbol: String) {
-        
+    mutating func performOperation(_ symbol: String) {
+        switch symbol {
+        case "π":
+            accumulator = Double.pi //display.text = String(Double.pi)   //"\(Double.pi)" could work too
+        case "√":
+            if let operand = accumulator {
+                accumulator = sqrt(operand)
+            }
+
+            //let operand = Double(display.text!)!
+            //display.text = String(sqrt(operand))
+            //making some changes
+            
+        default:
+            break
+        }
+
     }
     
     mutating func setOperand(_ operand: Double) {
