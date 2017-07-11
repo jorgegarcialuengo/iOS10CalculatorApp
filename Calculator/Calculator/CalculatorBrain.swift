@@ -8,9 +8,13 @@
 
 import Foundation
 
-func changeSign(operand: Double) -> Double {
-    return -operand
-}
+//func changeSign(operand: Double) -> Double {
+//    return -operand
+//}
+
+//func multiply(op1: Double, op2:Double) -> Double {
+//    return op1 * op2
+//}
 
 struct CalculatorBrain {
     //clasees have inheritances, structs do not
@@ -22,14 +26,21 @@ struct CalculatorBrain {
     private enum Operation {
         case constant(Double)
         case unaryOperation((Double) -> Double)
+        case binaryOperation((Double, Double) -> Double)
+        case equals
     }
     
     private var operations: Dictionary<String,Operation> = [
         "π" : Operation.constant(Double.pi),
         "e" : Operation.constant(M_E),
         "√" : Operation.unaryOperation(sqrt),
-        "cons" : Operation.unaryOperation(cos),
-        "±" : Operation.unaryOperation(changeSign)
+        "cos" : Operation.unaryOperation(cos),
+        "±" : Operation.unaryOperation({ -$0 }),
+        "×" : Operation.binaryOperation({ $0 * $1 }),
+        "÷" : Operation.binaryOperation({ $0 / $1 }),
+        "+" : Operation.binaryOperation({ $0 + $1 }),
+        "-" : Operation.binaryOperation({ $0 - $1 }),
+        "=" : Operation.equals
     ]
 
     
@@ -38,13 +49,30 @@ struct CalculatorBrain {
             switch  operation {
             case .constant(let value):
                 accumulator = value
-            case .unaryOperation:
-                break
+            case .unaryOperation(let funcion):
+                if accumulator != nil{
+                    accumulator = funcion(accumulator!)
+                }
+            case .binaryOperation(let function):
+                if accumulator != nil {
+                    pendingBinaryOperation = PendingBinaryOperation(function: function, firstOperand: accumulator!)
+                    accumulator = nil
+                }
+            case .equals:
+                performPendingBinaryOperation()
+                
             }
             //accumulator = constant
         }
-        
-        
+    }
+    
+    private mutating func performPendingBinaryOperation() {
+        if pendingBinaryOperation != nil && accumulator != nil {
+            accumulator = pendingBinaryOperation!.perform(with: accumulator!) //pbo? in pbo only unwrapps it if its not nil
+            pendingBinaryOperation = nil
+        }
+
+    }
 //        switch symbol {
 //        case "π":
 //            accumulator = Double.pi //display.text = String(Double.pi)   //"\(Double.pi)" could work too
@@ -58,6 +86,16 @@ struct CalculatorBrain {
 //        default:
 //            break
 //        }
+
+    private var pendingBinaryOperation: PendingBinaryOperation?
+    
+    private struct PendingBinaryOperation {
+        let function: (Double, Double) -> Double
+        let firstOperand: Double
+        
+        func perform(with secondOperand: Double) -> Double {
+            return function(firstOperand, secondOperand)
+        }
     }
     
     mutating func setOperand(_ operand: Double) {
