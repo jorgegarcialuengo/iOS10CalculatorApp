@@ -30,6 +30,10 @@ struct CalculatorBrain {
         case equals
     }
     
+    private var resultIsPending = false
+    
+    private var description: String?
+    
     private var operations: Dictionary<String,Operation> = [
         "π" : Operation.constant(Double.pi),
         "e" : Operation.constant(M_E),
@@ -54,6 +58,13 @@ struct CalculatorBrain {
 
     
     mutating func performOperation(_ symbol: String) {
+        
+        if description != nil && symbol != "=" {
+            description = description! + symbol
+        } else  if symbol != "=" {
+             description = symbol
+        }
+        
         if let operation = operations[symbol] {
             switch  operation {
             case .constant(let value):
@@ -66,13 +77,17 @@ struct CalculatorBrain {
                 if accumulator != nil {
                     pendingBinaryOperation = PendingBinaryOperation(function: function, firstOperand: accumulator!)
                     accumulator = nil
+                    resultIsPending = true
                 }
             case .equals:
                 performPendingBinaryOperation()
+                resultIsPending = false
                 
             }
             //accumulator = constant
         }
+        
+        print("result is pending \(resultIsPending)")
     }
     
     private mutating func performPendingBinaryOperation() {
