@@ -18,9 +18,12 @@ class ViewController: UIViewController {
         let digit = sender.currentTitle! // use ! to reach the set value. It will crash if value is not set
         if userIsInTheMiddleOfTyping {
             let textCurrentlyInDisplay = display.text!
-            display.text = textCurrentlyInDisplay + digit
+            if (digit == "." && textCurrentlyInDisplay.contains(".")) {
+                print("do nothin, is a .")
+            } else {
+                display.text = textCurrentlyInDisplay + digit }
         } else {
-            display.text = digit
+            if digit == "." { display.text = "0" + digit } else { display.text = digit }
             userIsInTheMiddleOfTyping = true
         }
         
