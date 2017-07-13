@@ -33,13 +33,22 @@ struct CalculatorBrain {
     private var operations: Dictionary<String,Operation> = [
         "π" : Operation.constant(Double.pi),
         "e" : Operation.constant(M_E),
+        
         "√" : Operation.unaryOperation(sqrt),
         "cos" : Operation.unaryOperation(cos),
         "±" : Operation.unaryOperation({ -$0 }),
+        "∛" : Operation.unaryOperation(cbrt),
+        "∜" : Operation.unaryOperation({pow($0,0.25)}),
+        "sen" : Operation.unaryOperation(sin),
+        "eˣ" : Operation.unaryOperation( {pow(M_E,$0)}),
+        "10ˣ" : Operation.unaryOperation({pow(10,$0)}),
+        "x²" : Operation.unaryOperation({pow($0,2)}),
+        "x³" : Operation.unaryOperation({pow($0,3)}),
         "×" : Operation.binaryOperation({ $0 * $1 }),
         "÷" : Operation.binaryOperation({ $0 / $1 }),
         "+" : Operation.binaryOperation({ $0 + $1 }),
         "-" : Operation.binaryOperation({ $0 - $1 }),
+
         "=" : Operation.equals
     ]
 
