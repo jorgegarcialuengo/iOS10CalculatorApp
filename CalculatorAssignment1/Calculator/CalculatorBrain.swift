@@ -32,7 +32,7 @@ struct CalculatorBrain {
     
     private var resultIsPending = false
     
-    private var description: String?
+    var description: String?
     
     private var operations: Dictionary<String,Operation> = [
         "π" : Operation.constant(Double.pi),
@@ -55,23 +55,18 @@ struct CalculatorBrain {
 
         "=" : Operation.equals
     ]
-
     
     mutating func performOperation(_ symbol: String) {
-        
-        if description != nil && symbol != "=" {
-            description = description! + symbol
-        } else  if symbol != "=" {
-             description = symbol
-        }
-        
         if let operation = operations[symbol] {
+
             switch  operation {
             case .constant(let value):
                 accumulator = value
+                resultIsPending = true
             case .unaryOperation(let funcion):
                 if accumulator != nil{
                     accumulator = funcion(accumulator!)
+                    resultIsPending = false
                 }
             case .binaryOperation(let function):
                 if accumulator != nil {
@@ -86,7 +81,7 @@ struct CalculatorBrain {
             }
             //accumulator = constant
         }
-        
+
         print("result is pending \(resultIsPending)")
     }
     
@@ -94,22 +89,11 @@ struct CalculatorBrain {
         if pendingBinaryOperation != nil && accumulator != nil {
             accumulator = pendingBinaryOperation!.perform(with: accumulator!) //pbo? in pbo only unwrapps it if its not nil
             pendingBinaryOperation = nil
+            description = nil
         }
 
     }
-//        switch symbol {
-//        case "π":
-//            accumulator = Double.pi //display.text = String(Double.pi)   //"\(Double.pi)" could work too
-//        case "√":
-//            if let operand = accumulator {
-//                accumulator = sqrt(operand)
-//            }
-//            //let operand = Double(display.text!)!
-//            //display.text = String(sqrt(operand))
-//            //making some changes
-//        default:
-//            break
-//        }
+
 
     private var pendingBinaryOperation: PendingBinaryOperation?
     
@@ -122,9 +106,17 @@ struct CalculatorBrain {
         }
     }
     
+    mutating func setDescription(_ symbol: String) {
+        if description != nil && accumulator != nil {
+            description = description! + String(accumulator!) + " \(symbol) "
+        } else {
+            description = String(accumulator!) + " \(symbol) "
+        }
+        print("description \(description!)")
+    }
+    
     mutating func setOperand(_ operand: Double) {
         accumulator = operand
-        
     }
     
     var result: Double? {
