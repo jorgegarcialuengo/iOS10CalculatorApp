@@ -32,7 +32,8 @@ struct CalculatorBrain {
     
     private var resultIsPending = false
     
-    var description: String?
+    private var description: String?
+    var lastDescription: String?
     
     private var operations: Dictionary<String,Operation> = [
         "π" : Operation.constant(Double.pi),
@@ -65,18 +66,23 @@ struct CalculatorBrain {
                 resultIsPending = true
             case .unaryOperation(let funcion):
                 if accumulator != nil{
+                    setDescription(symbol)
                     accumulator = funcion(accumulator!)
                     resultIsPending = false
+                    description = nil
                 }
             case .binaryOperation(let function):
                 if accumulator != nil {
+                    setDescription(symbol)
                     pendingBinaryOperation = PendingBinaryOperation(function: function, firstOperand: accumulator!)
                     accumulator = nil
                     resultIsPending = true
                 }
             case .equals:
+                setDescription("")
                 performPendingBinaryOperation()
                 resultIsPending = false
+                description = nil
                 
             }
             //accumulator = constant
@@ -109,10 +115,14 @@ struct CalculatorBrain {
     mutating func setDescription(_ symbol: String) {
         if description != nil && accumulator != nil {
             description = description! + String(accumulator!) + " \(symbol) "
-        } else {
+            lastDescription = description
+        } else if accumulator != nil && description == nil {
             description = String(accumulator!) + " \(symbol) "
+            lastDescription = description
         }
-        print("description \(description!)")
+        
+        if accumulator != nil { print("accumulator \(accumulator!)")} else { print("accumulator is nil")}
+        if description != nil { print("description \(description!)")}
     }
     
     mutating func setOperand(_ operand: Double) {

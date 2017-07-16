@@ -14,6 +14,8 @@ class ViewController: UIViewController {
     
     var userIsInTheMiddleOfTyping = false // : Bool = false is how should do it, but Xcode can guess false can only be a Bool
     
+    @IBOutlet weak var descriptionLabel: UILabel!
+    
     @IBAction func touchDigit(_ sender: UIButton) {
         let digit = sender.currentTitle! // use ! to reach the set value. It will crash if value is not set
         if userIsInTheMiddleOfTyping {
@@ -49,15 +51,13 @@ class ViewController: UIViewController {
             userIsInTheMiddleOfTyping = false
         }
         if let mathematicalSymbol = sender.currentTitle {
-            brain.setDescription(mathematicalSymbol)
             brain.performOperation(mathematicalSymbol)
         }
         if let result = brain.result {
             displayValue = result
         }
+        if brain.lastDescription != nil {  descriptionLabel.text = brain.lastDescription!}
     }
-    
-    
     
 }
 

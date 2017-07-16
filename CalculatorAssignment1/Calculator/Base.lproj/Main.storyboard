@@ -369,12 +369,13 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="descriptionLabel" destination="LDP-AR-lHs" id="raS-LR-syC"/>
                         <outlet property="display" destination="8ZC-h1-4Wl" id="jf7-vh-ltX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-505" y="-97"/>
+            <point key="canvasLocation" x="-409" y="-287"/>
         </scene>
     </scenes>
 </document>
