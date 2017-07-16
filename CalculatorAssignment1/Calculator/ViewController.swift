@@ -16,6 +16,7 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var descriptionLabel: UILabel!
     
+    
     @IBAction func touchDigit(_ sender: UIButton) {
         let digit = sender.currentTitle! // use ! to reach the set value. It will crash if value is not set
         if userIsInTheMiddleOfTyping {
@@ -44,6 +45,12 @@ class ViewController: UIViewController {
     
     private var brain = CalculatorBrain()
     
+    @IBAction func resetAll(_ sender: Any) {
+        brain.reset = nil
+        display.text = "0"
+        descriptionLabel.text = ""
+    }
+    
     @IBAction func performOperation(_ sender: UIButton) {
         
         if userIsInTheMiddleOfTyping {
@@ -56,7 +63,14 @@ class ViewController: UIViewController {
         if let result = brain.result {
             displayValue = result
         }
-        if brain.lastDescription != nil {  descriptionLabel.text = brain.lastDescription!}
+        
+        if brain.lastDescription != nil {
+            if brain.resultIsPending {
+                descriptionLabel.text = brain.lastDescription! + "..."
+            } else {
+                descriptionLabel.text = brain.lastDescription! + "="
+            }
+        }
     }
     
 }

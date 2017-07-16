@@ -30,9 +30,10 @@ struct CalculatorBrain {
         case equals
     }
     
-    private var resultIsPending = false
+    var resultIsPending = false
     
     private var description: String?
+    
     var lastDescription: String?
     
     private var operations: Dictionary<String,Operation> = [
@@ -133,6 +134,12 @@ struct CalculatorBrain {
         get {
             return accumulator
         } //you dont put set, so it becomes read only property
+    }
+    
+    mutating func reset() {
+        resultIsPending = false
+        description = nil
+        lastDescription = nil
     }
     
 }
