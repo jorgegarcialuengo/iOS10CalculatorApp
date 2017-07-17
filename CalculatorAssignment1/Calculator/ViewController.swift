@@ -46,7 +46,7 @@ class ViewController: UIViewController {
     private var brain = CalculatorBrain()
     
     @IBAction func resetAll(_ sender: Any) {
-        brain.reset = nil
+        brain.reset()
         display.text = "0"
         descriptionLabel.text = ""
     }
