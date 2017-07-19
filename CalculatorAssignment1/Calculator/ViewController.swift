@@ -47,6 +47,17 @@ class ViewController: UIViewController {
     
     private var brain = CalculatorBrain()
     
+    @IBAction func randomNumber(_ sender: UIButton) {
+        let randomNumber: Float32 = Float32((arc4random() % 10))
+        let otherNum = randomNumber/10
+        display.text = String(otherNum)
+        brain.setOperand(displayValue)
+        print(otherNum)
+        
+    }
+    
+    
+    
     @IBAction func eraseLastDigit(_ sender: Any) {
         if userIsInTheMiddleOfTyping == false || display.text!.characters.count == 1 {
             brain.reset()

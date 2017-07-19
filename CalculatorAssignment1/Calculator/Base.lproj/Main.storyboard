@@ -126,9 +126,9 @@
                                                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <state key="normal" title="x³"/>
+                                                        <state key="normal" title="ARC"/>
                                                         <connections>
-                                                            <action selector="performOperation:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zUI-ji-hTq"/>
+                                                            <action selector="randomNumber:" destination="BYZ-38-t0r" eventType="touchUpInside" id="F9R-OL-6DH"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
