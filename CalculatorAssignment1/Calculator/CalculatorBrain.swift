@@ -122,7 +122,15 @@ struct CalculatorBrain {
         if resultIsPending != true {
             description = ""
         }
-        description?.append(String(operand))
+        if operand.truncatingRemainder(dividingBy: 1) == 0 {
+            let format = NumberFormatter()
+            format.maximumFractionDigits = 0
+            description?.append(format.string(for: operand)!)
+            
+        } else {
+            description?.append(String(operand))
+        }
+
     }
     
     var result: Double? {
