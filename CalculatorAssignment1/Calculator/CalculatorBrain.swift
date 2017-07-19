@@ -73,10 +73,10 @@ struct CalculatorBrain {
             case .unaryOperation(let funcion):
                 if accumulator != nil{
                     if resultIsPending == true {
-                        let numberString: String? = String(accumulator!)
-                        let stringLength = numberString!.characters.count
-                        description = String(description!.characters.dropLast(stringLength))
-                        description = "\(description!)\(symbol)(\(numberString!))"
+                        let numberString = String(accumulator!)
+                        let range = description!.index(description!.endIndex, offsetBy: -numberString.characters.count)..<description!.endIndex
+                        description!.removeSubrange(range)
+                        description = "\(description!)\(symbol)(\(numberString))"
                     } else {
                         description = "\(symbol)(\(description!))"
                     }

@@ -12,7 +12,7 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var display: UILabel!  //? se use ! instead of ?, an inplicitly unwrap optional. Now we dont have to write display! every time
     
-    var userIsInTheMiddleOfTyping = false // : Bool = false is how should do it, but Xcode can guess false can only be a Bool
+    var userIsInTheMiddleOfTyping = false
     
     @IBOutlet weak var descriptionLabel: UILabel!
     
@@ -30,7 +30,6 @@ class ViewController: UIViewController {
             userIsInTheMiddleOfTyping = true
         }
         
-        
         //print("\(digit) was called") // use \(variable) to print it's content
      }
     
@@ -45,10 +44,24 @@ class ViewController: UIViewController {
     
     private var brain = CalculatorBrain()
     
+    @IBAction func eraseLastDigit(_ sender: Any) {
+        if userIsInTheMiddleOfTyping == false || display.text!.characters.count == 1 {
+            brain.reset()
+            display.text = "0"
+            descriptionLabel.text = ""
+            userIsInTheMiddleOfTyping = false
+        } else {
+            display.text!.remove(at: display.text!.index(before: display.text!.endIndex))
+            brain.setOperand(displayValue)
+        }
+    }
+    
     @IBAction func resetAll(_ sender: Any) {
         brain.reset()
         display.text = "0"
         descriptionLabel.text = ""
+        userIsInTheMiddleOfTyping = false
+        
     }
     
     @IBAction func performOperation(_ sender: UIButton) {
